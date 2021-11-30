@@ -1,0 +1,65 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 0px;
+}
+
+body {
+  background: #a8e6cf;
+  color: #ff084a;
+}
+
+.main-content {
+  background: #ffd3b6;
+  min-height: 100vh;
+}
+
+.nav-link {
+  color: #8d5524;
+  opacity: 0.7;
+  padding: 1em 0em;
+}
+
+.nav-link:hover {
+  opacity: 3;
+  color: #8d5524;
+}
+
+.nav-link.active {
+  opacity: 1;
+  color: white;
+  font-weight: bold;
+}
+
+.card-header h3 {
+  font-size: 1em;
+  letter-spacing: 1px;
+}
+
+table.table tr th {
+  color: #37a9ff;
+}
+
+table.table tr td {
+  color: #37a9ff;
+  font-size: 0.9em;
+  vertical-align: middle;
+}
+
+.pagination {
+  justify-content: center;
+  align-items: center;
+}
+
+.form-group label {
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+.icon-menu {
+  margin-right: 0.5em;
+}
+
