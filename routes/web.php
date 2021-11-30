@@ -24,9 +24,11 @@ Route::middleware('auth')->group(function(){
 
 //Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/dashboard', 'Dashboard\DashboardController@index')->name('dashboard');
-Route::get('/dashboard/movie', 'Dashboard\MovieController@index')->name('dashboard.movies');
 Route::get('/dashboard/teater', 'Dashboard\TheaterController@index')->name('dashboard.teater');
 Route::get('/dashboard/tiket', 'Dashboard\TicketController@index')->name('dashboard.tiket');
+
+//MOVIES
+Route::get('/dashboard/movies', 'Dashboard\MovieController@index')->name('dashboard.movies');
 
 
 //Users
