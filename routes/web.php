@@ -29,6 +29,9 @@ Route::get('/dashboard/tiket', 'Dashboard\TicketController@index')->name('dashbo
 
 //MOVIES
 Route::get('/dashboard/movies', 'Dashboard\MovieController@index')->name('dashboard.movies');
+Route::get('/dashboard/movies/create', 'Dashboard\MovieController@create')->name('dashboard.movies.create');
+Route::post('/dashboard/movies', 'Dashboard\MovieController@store')->name('dashboard.movies.store');
+Route::delete('/dashboard/movies', 'Dashboard\MovieController@destroy')->name('dashboard.movies.delete');
 
 
 //Users
