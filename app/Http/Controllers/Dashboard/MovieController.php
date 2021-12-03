@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Dashboard;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class MovieController extends Controller
 {
@@ -38,7 +40,13 @@ class MovieController extends Controller
      */
     public function create()
     {
-        //
+        $active = 'Movies';
+
+        return view('dashboard/movie/form', [
+        'active' => $active,
+        'url'    => 'dashboard.movies.store',
+        'button' => 'Create'
+    ]);
     }
 
     /**
@@ -47,9 +55,33 @@ class MovieController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Movie $movie)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|unique:App\Models\Movie,title',
+            'description' => 'required',
+            'thumbnail' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return redirect()
+                    ->route('dashboard.movies.create')
+                    ->withErrors($validator)
+                    ->withInput();
+        }else{
+            $image = $request->file('thumbnail');
+            $filename = time() .'.'. $image->getClientOriginalExtension();
+            Storage::disk('local')->putFileAs('public/movies', $image, $filename);
+
+            $movie->title = $request->input('title');
+            $movie->description = $request->input('description');
+            $movie->thumbnail = $filename;
+            $movie->save();
+            return redirect()
+                    ->route('dashboard.movies')
+                    ->with('message', __('message.create', ['title' => $request->input('title')]));
+
+        }
     }
 
     /**
@@ -60,7 +92,7 @@ class MovieController extends Controller
      */
     public function show(Movie $movie)
     {
-        //
+        
     }
 
     /**
@@ -71,7 +103,16 @@ class MovieController extends Controller
      */
     public function edit(Movie $movie)
     {
-        //
+        $active = 'Movies';
+
+
+        return view('dashboard/movie/form', [
+            'active' => $active,
+            'movie' => $movie,
+            'button' => 'Update',
+            'url'    => 'dashboard.movies.update'
+
+    ]);
     }
 
     /**
@@ -83,8 +124,36 @@ class MovieController extends Controller
      */
     public function update(Request $request, Movie $movie)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|unique:App\Models\Movie,title,'.$movie->id,
+            'description' => 'required',
+           // 'thumbnail' => ''
+        ]);
+
+        if($validator->fails()){
+            return redirect()
+                    ->route('dashboard.movies.update', $movie->id)
+                    ->withErrors($validator)
+                    ->withInput();
+        }else{
+            if($request->hasFile('thumbnail')){
+
+            $image = $request->file('thumbnail');
+            $filename = time() .'.'. $image->getClientOriginalExtension();
+            Storage::disk('local')->putFileAs('public/movies', $image, $filename);
+            $movie->thumbnail = $filename;
+            }
+            
+            $movie->title = $request->input('title');
+            $movie->description = $request->input('description');
+
+            $movie->save();
+            return redirect()
+                    ->route('dashboard.movies')
+                    ->with('message', __('message.update', ['title' => $request->input('title')]));
+
     }
+}
 
     /**
      * Remove the specified resource from storage.
@@ -93,7 +162,15 @@ class MovieController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Movie $movie)
-    {
-        //
+    { 
+  
+        $movie->delete();
+        $title = $movie->title;
+        
+
+        return redirect()
+            ->route('dashboard.movies')
+            ->with('message', __('message.delete', ['title' => $title]));
     }
 }
+
