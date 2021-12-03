@@ -2,9 +2,21 @@
 
 @section('content')
     <div class="mb-2">
-        <a href=" {{route('dashboard.movies.create')}} " class="btn btn-primary btn-sm">+ Movie</a>
+        <a href=" {{route('dashboard.movies.create')}} " class="btn btn-primary "> 
+            <i class="fas fa-plus"></i> Movie
+        </a>
     </div>
 
+
+
+    @if(session()->has('message'))
+        <div class="alert alert-success">
+            <strong>{{ session()->get('message') }}</strong>
+            <button class="close" type="button" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    @endif
     <div class="card">
         <div class="card-header">
             <div class="row">
@@ -17,7 +29,9 @@
                         <div class="input-group">
                             <input type="text" class="form-control form-control-sm" name="q" value="{{ $request['q'] ?? ''}}">
                             <div class="input-group-append">
-                                <button type= "submit" class="btn btn-primary btn-sm">Search</button>
+                                <button type= "submit" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-search"></i>
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -28,11 +42,11 @@
         <div class="card-body p-0">
             @if($movies->total())
                 <table class="table table-borderless table-striped table-hover">
-                <thead>
+                <thead class="text-center">
                     <tr>
                         <th>Thumbnail</th>
                         <th>Title</th>
-                       <!-- <th>Description</th> -->
+                       <th>Description</th> 
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -42,8 +56,8 @@
                         <td class="col-thumbnail">
                             <img src=" {{ asset('storage/movies/'.$movie->thumbnail)}} " class="img-fluid">
                         </td>
-                        <td><strong>{{ $movie->title}}</strong></td>
-                        <!--<td>{{ $movie->description }}</td>-->
+                        <td class="text-center"><strong>{{ $movie->title}}</strong></td>
+                        <td>{{ $movie->description }}</td>
                         <td> <a href="{{route('dashboard.movies.edit',  $movie->id)}}" class="btn btn-success btn-sm">
                             <i class="fas fa-edit"></i> Edit</a></td>
                     </tr> 

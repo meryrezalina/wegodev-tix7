@@ -42,7 +42,11 @@ class MovieController extends Controller
     {
         $active = 'Movies';
 
-        return view('dashboard/movie/form', ['active' => $active]);
+        return view('dashboard/movie/form', [
+        'active' => $active,
+        'url'    => 'dashboard.movies.store',
+        'button' => 'Create'
+    ]);
     }
 
     /**
@@ -74,7 +78,8 @@ class MovieController extends Controller
             $movie->thumbnail = $filename;
             $movie->save();
             return redirect()
-                    ->route('dashboard.movies');
+                    ->route('dashboard.movies')
+                    ->with('message', __('message.create', ['title' => $request->input('title')]));
 
         }
     }
@@ -144,7 +149,8 @@ class MovieController extends Controller
 
             $movie->save();
             return redirect()
-                    ->route('dashboard.movies');
+                    ->route('dashboard.movies')
+                    ->with('message', __('message.update', ['title' => $request->input('title')]));
 
     }
 }
@@ -156,8 +162,14 @@ class MovieController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Movie $movie)
-    {
-        //
+    { 
+  
+        $movie->delete();
+        $title = $movie->title;
+
+        return redirect()
+            ->route('dashboard.movies')
+            ->with('message', __('message.delete', ['title' => $title]));
     }
 }
 
