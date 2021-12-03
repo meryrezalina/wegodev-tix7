@@ -166,6 +166,7 @@ class MovieController extends Controller
   
         $movie->delete();
         $title = $movie->title;
+        
 
         return redirect()
             ->route('dashboard.movies')

@@ -7,7 +7,9 @@
         </a>
     </div>
 
-
+    <div>
+        
+    </div>
 
     @if(session()->has('message'))
         <div class="alert alert-success">
