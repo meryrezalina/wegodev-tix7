@@ -69,7 +69,7 @@
 
                 {{ $movies ->appends($request)->links()}}
             @else
-                <h4 class="text-center"> GAK ADA FILM BOSS </h4>
+                <h4 class="text-center"> {{ __('message.no_data', ['module' => 'Movies']) }}</h4>
             @endif 
         </div>
     </div>

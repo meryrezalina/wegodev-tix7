@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
 use App\Models\Theater;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class TheaterController extends Controller
 {
@@ -38,18 +39,50 @@ class TheaterController extends Controller
      */
     public function create()
     {
-        //
-    }
+        $active = 'Theaters';
 
+        return view('dashboard/theater/form', [
+        'active' => $active,
+        'url'    => 'dashboard.theaters.store',
+        'button' => 'Create'
+    ]);
+    }
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Theater $theater)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'theater' => 'required|unique:App\Models\Theater,theater',
+            'address' => 'required',
+            'status' => 'required'
+           // 'thumbnail' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return redirect()
+                    ->route('dashboard.theaters.create')
+                    ->withErrors($validator)
+                    ->withInput();
+        }else{
+            // $image = $request->file('thumbnail');
+            // $filename = time() .'.'. $image->getClientOriginalExtension();
+            // Storage::disk('local')->putFileAs('public/theaters', $image, $filename);
+
+            $theater->theater = $request->input('theater');
+            $theater->address = $request->input('address');
+            $theater->status = $request->input('status');
+
+            //$theater->thumbnail = $filename;
+            $theater->save();
+            return redirect()
+                    ->route('dashboard.theaters')
+                    ->with('message', __('message.create_theater', ['theater' => $request->input('theater')]));
+
+        }
     }
 
     /**
@@ -71,7 +104,16 @@ class TheaterController extends Controller
      */
     public function edit(Theater $theater)
     {
-        //
+        $active = 'Theaters';
+
+
+        return view('dashboard/theater/form', [
+            'active' => $active,
+            'theater' => $theater,
+            'button' => 'Update',
+            'url'    => 'dashboard.theaters.update'
+
+    ]);
     }
 
     /**
@@ -83,7 +125,37 @@ class TheaterController extends Controller
      */
     public function update(Request $request, Theater $theater)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'theater' => 'required|unique:App\Models\Theater,theater,'.$theater->id,
+            'address' => 'required',
+            'status' => 'required'
+           // 'thumbnail' => ''
+        ]);
+
+        if($validator->fails()){
+            return redirect()
+                    ->route('dashboard.theaters.update', $theater->id)
+                    ->withErrors($validator)
+                    ->withInput();
+        }else{
+            //if($request->hasFile('thumbnail')){
+
+           // $image = $request->file('thumbnail');
+           // $filename = time() .'.'. $image->getClientOriginalExtension();
+           //Storage::disk('local')->putFileAs('public/theaters', $image, $filename);
+            //$theater->thumbnail = $filename;
+            }
+            
+            $theater->theater = $request->input('theater');
+            $theater->address = $request->input('address');
+            $theater->status  = $request->input('status');
+
+
+            $theater->save();
+            return redirect()
+                    ->route('dashboard.theaters')
+                    ->with('message', __('message.update_theater', ['theater' => $request->input('theater')]));
+
     }
 
     /**

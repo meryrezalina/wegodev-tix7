@@ -66,9 +66,9 @@
                 </tbody>
                 </table>
 
-                {{ $movies ->appends($request)->links()}}
+                {{ $theaters ->appends($request)->links()}}
             @else
-                <h4 class="text-center"> GAK ADA THEATERS BOSS </h4>
+                <h4 class="text-center"> {{ __('message.no_data', ['module' => 'Theater']) }} </h4>
             @endif 
         </div>
     </div>
