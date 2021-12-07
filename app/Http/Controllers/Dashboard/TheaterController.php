@@ -165,7 +165,14 @@ class TheaterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Theater $theater)
-    {
-        //
+    { 
+  
+        $theater->delete();
+        $theater = $theater->theater;
+        
+
+        return redirect()
+            ->route('dashboard.theaters')
+            ->with('message', __('message.delete_theater', ['theater' => $theater]));
     }
 }

@@ -9,4 +9,6 @@ return [
     'no_data' => 'Data :module kosong',
     'create_theater' => 'Data :theater berhasil di tambahkan',
     'update_theater' => 'Data :theater berhasil di update',
+    'delete_theater' => 'Data :theater berhasil di hapus',
+
 ];
