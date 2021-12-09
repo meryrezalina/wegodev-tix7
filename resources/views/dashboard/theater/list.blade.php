@@ -59,8 +59,12 @@
                             {{ $theater->theater}}
                         </td>
                         <td class="text-center">{{ $theater->address}}</td>
-                        <td> <a href="{{route('dashboard.theaters.edit',  $theater->id)}}" class="btn btn-success btn-sm">
-                            <i class="fas fa-edit"></i> Edit</a></td>
+                        <td> 
+                            <a href="{{route('dashboard.theaters.edit',  $theater->id)}}" class="btn btn-success btn-sm" title="edit">
+                            <i class="fas fa-edit"></i></a>
+                            <a href="{{route('dashboard.theaters.arrange.movie',  $theater->id)}}" class="btn btn-primary btn-sm" title="arrange movie">
+                                <i class="fas fa-film"></i></a>
+                        </td>
                     </tr> 
                     @endforeach
                 </tbody>
