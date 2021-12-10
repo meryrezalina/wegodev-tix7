@@ -39,7 +39,7 @@
 
                         <div class="form-group">
                             <label for="price">Price</label>
-                            <input type="number" class="form-control @error('price') {{'is-invalid'}} @enderror" name="price" value=" {{ old('price') ?? $theater->price ?? ''}} ">
+                            <input type="text" class="form-control @error('price') {{'is-invalid'}} @enderror" name="price" value=" {{ old('price') ?? $theater->price ?? ''}} ">
                             @error('price')
                             <span class="text-danger"> {{$message}} </span>   
                             @enderror
@@ -47,7 +47,7 @@
 
                         <div class="form-group">
                             <label for="movie">Movies</label>
-                            <select name="movie-id" class="form-control">
+                            <select name="movie_id" class="form-control">
                                 <option value="">Pilih Film</option>
                                 @foreach($movies as $movie)
                                     @if($movie->id == old('movie_id'))
@@ -67,13 +67,13 @@
                                 <label for="Seats">Seats</label>
                             </div>
                             <div class="col-5">
-                                <input type="number" class="form-control @error('rows') {{'is-invalid'}} @enderror" placeholder="Rows" name="rows" value=" {{ old('rows') ?? $theater->rows ?? ''}} ">
+                                <input type="text" class="form-control @error('rows') {{'is-invalid'}} @enderror" placeholder="Rows" name="rows" value=" {{ old('rows') ?? $theater->rows ?? ''}} ">
                                 @error('rows')
                                 <span class="text-danger"> {{$message}} </span>   
                                 @enderror
                             </div>
                             <div class="col-5">
-                                <input type="text" class="form-control @error('columns') {{'is-invalid'}} @enderror" placeholder="Columns" name="columns" value=" {{ old('columns') ?? $theater->columns ?? ''}} ">
+                                <input type="text" class="form-control @error('columns') {{'is-invalid'}} @enderror" placeholder="Columns" name="columns" value=" {{old('columns') ?? $theater->columns ?? ''}} ">
                                 @error('columns')
                                 <span class="text-danger"> {{$message}} </span>   
                                 @enderror
@@ -109,16 +109,6 @@
                             <span class="text-danger"> {{$message}} </span>   
                         @enderror
                         </div>
-
-                      <!--  <div class="form-group mt-4">
-                            <div class="custom-file">
-                            <input type="file" name="thumbnail" class="custom-file-input" value="old('thumbnail')">
-                            <label for="thumbnail" class="custom-file-label">Thumbnail</label>
-                           @error('thumbnail"')
-                                <span class="text-danger"> {{$message}} </span>   
-                            @enderror
-                            </div>
-                        </div> -->
 
                         <div class="form-group mb-0">
                             <button type="submit" class="btn btn-primary btn-sm">{{ $button }}</button>

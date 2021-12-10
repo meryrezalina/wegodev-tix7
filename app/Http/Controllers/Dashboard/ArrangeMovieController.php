@@ -22,16 +22,17 @@ class ArrangeMovieController extends Controller
 
         $active = 'Theaters';
 
-        // $theaters = $theaters ->when($q, function($query) use ($q) {
-        //                     return $query->where('theater', 'like', '%'.$q.'%');
-        // })
-        //             ->paginate(10);
-        
-        // $request = $request->all();
+        $arrangeMovies = ArrangeMovie::where('theater_id', $theater->id)
+                                            ->with('movies')
+                                            ->paginate();
 
-        return view('dashboard/arrange_movie/list', ['theater' => $theater,
-                                            'request'=>$request, 
-                                            'active' => $active]);
+        $request = $request->all();
+
+        return view('dashboard/arrange_movie/list', [
+                     'arrangeMovies' => $arrangeMovies,
+                     'theater'       => $theater,
+                     'request'       => $request, 
+                     'active'        => $active]);
     }
     
     /**
@@ -59,16 +60,17 @@ class ArrangeMovieController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, ArrangeMovie $arrangeMovie)
     {
         $validator = Validator::make($request->all(), [
-            'studio' => 'required',
-            'price' => 'required',
-            'movie_id' => 'required',
-            'rows' => 'required',
-            'columns' => 'required',
-            'schedule' => 'required',
-            'status' => 'required'
+            'theater_id'=> 'required',
+            'studio'    => 'required',
+            'price'     => 'required',
+            'movie_id'  => 'required',
+            'rows'      => 'required',
+            'columns'   => 'required',
+            'schedules'  => 'required',
+            'status'    => 'required'
 
            // 'thumbnail' => 'required'
         ]);
@@ -79,9 +81,25 @@ class ArrangeMovieController extends Controller
                     ->withErrors($validator)
                     ->withInput();
         }else{
-           // $theater->theater = $request->input('theater');
 
+            $seats = [
+                'rows'    => $request->input('rows'),
+                'columns' => $request->input('columns')
 
+            ]; 
+
+            $arrangeMovie->theater_id    = $request->input('theater_id');
+            $arrangeMovie->studio        = $request->input('studio');
+            $arrangeMovie->price         = $request->input('price');
+            $arrangeMovie->movie_id      = $request->input('movie_id');
+            $arrangeMovie->status        = $request->input('status');
+            $arrangeMovie->seats         = json_encode($seats);
+            $arrangeMovie->schedules     = json_encode($request->input('schedules'));
+            $arrangeMovie->save();
+
+            return redirect()
+                    ->route('dashboard.theaters.arrange.movie', $request->input('theater_id'))
+                    ->with('message', __('message.create_theater', ['theater' => $request->input('studio')]));
         }
     }
 

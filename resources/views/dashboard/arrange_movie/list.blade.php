@@ -20,7 +20,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-8 align-self-center">
-                    <h3>Theaters</h3>
+                    <h3>Theaters - {{ $theater->theater }}</h3>
                 </div>
 
                 <div class="col-4">
@@ -39,8 +39,36 @@
         </div>
 
         <div class="card-body p-0">
-            
+            <table class="table table-borderless table-striped table-hover">
+                     <thead class="text-center">
+                        <tr>
+                            <th>Movie</th>
+                            <th>Studio</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                     </thead>
+                <tbody>
+                    <!-- KONTEN -->
+                    @foreach ($arrangeMovies as $arrangeMovie)
+                    <tr>
+                        <td class="col-thumbnail">
+                            <img src=" {{ asset('storage/movies/'.$arrangeMovie->movies->first()->thumbnail)}} " class="img-fluid">
+                        </td>
+                        <td class="text-center">{{ $arrangeMovie->studio}}</td>
+                        <td class="text-center">{{ $arrangeMovie->price}}</td>
+                        <td class="text-center">{{ $arrangeMovie->status}}</td>
+                        <td> 
+                            <a href="{{route('dashboard.theaters.arrange.movie.edit',  $arrangeMovie->id)}}" class="btn btn-success btn-sm" title="edit">
+                            <i class="fas fa-edit"></i></a>
+                        </td>
+                    </tr> 
+                    @endforeach
+                </tbody>
+            </table>
         </div>
+
     </div>
 
 @endsection
