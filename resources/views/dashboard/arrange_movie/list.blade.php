@@ -2,13 +2,10 @@
 
 @section('content')
     <div class="mb-2">
-        <a href=" {{route('dashboard.theaters.arrange.movie.create', $theater->id)}} " class="btn btn-primary "> 
-            <i class="fas fa-plus"></i> Movie
+        <h3 class="text-center text-uppercase font-weight-bold ">{{ $theater->theater }}</h3>
+        <a href=" {{route('dashboard.theaters.arrange.movie.create', $theater->id)}} " class="btn btn-primary mb-0"> 
+            <i class="fas fa-plus"></i> Studio 
         </a>
-    </div>
-
-    <div>
-        
     </div>
 
     @if(session()->has('message'))

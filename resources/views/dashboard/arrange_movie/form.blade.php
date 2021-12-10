@@ -22,15 +22,16 @@
                     <form method="post" action="{{route($url, $theater->id ?? '') }}" enctype="multipart/form-data">
                         @csrf
                         @if(isset($theater))
-                        @method('put')
+                      <!--  @method('put') -->
                         @endif
-
-                        <input type="button" name="theater" value=" {{ $theater->theater }} ">
+                        
+                        <h3 class="text-center text-uppercase font-weight-bold">{{ $theater->theater }}</h3>
+                        <input type="hidden" name="theater_id" value=" {{ $theater->id }} " readonly>
 
 
                         <div class="form-group">
                             <label for="studio">Studio</label>
-                            <input type="text" class="form-control @error('studio') {{'is-invalid'}} @enderror" name="studio" value=" {{ old('studio') ?? $theater->studio ?? ''}} ">
+                            <input type="text" class="form-control @error('studio') {{'is-invalid'}} @enderror" name="studio" placeholder= "Studio" value=" {{ old('studio') ?? $theater->studio ?? ''}} ">
                             @error('studio')
                             <span class="text-danger"> {{$message}} </span>   
                             @enderror
@@ -49,9 +50,16 @@
                             <select name="movie-id" class="form-control">
                                 <option value="">Pilih Film</option>
                                 @foreach($movies as $movie)
+                                    @if($movie->id == old('movie_id'))
+                                         <option value="{{$movie->id}}" selected>{{ $movie->title }} </option>
+                                    @else
                                     <option value="{{$movie->id}}" placeholder="Pilih Film">{{ $movie->title }} </option>
+                                    @endif
                                 @endforeach
                             </select>
+                            @error('movie_id')
+                            <span class="text-danger"> {{$message}} </span>   
+                            @enderror
                         </div>
 
                         <div class="form-group form-row mt-4">
@@ -77,7 +85,7 @@
                                 <div class="form-group mb-0">
                                     <label for="schedule">Schedule</label>
                                 </div>
-                                 <schedule-component></schedule-component>
+                                 <schedule-component :old-schedules="{{ json_encode(old('schedules') ?? []) }}"></schedule-component>
                             </div>
                             @error('columns')
                                 <span class="text-danger"> {{$message}} </span>   
