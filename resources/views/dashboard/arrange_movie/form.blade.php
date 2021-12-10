@@ -31,7 +31,7 @@
 
                         <div class="form-group">
                             <label for="studio">Studio</label>
-                            <input type="text" class="form-control @error('studio') {{'is-invalid'}} @enderror" name="studio" placeholder= "Studio" value=" {{ old('studio') ?? $theater->studio ?? ''}} ">
+                            <input type="text" class="form-control @error('studio') {{'is-invalid'}} @enderror" name="studio" placeholder= "Studio" value=" {{ old('studio') ?? $arrangeMovie->studio ?? ''}} ">
                             @error('studio')
                             <span class="text-danger"> {{$message}} </span>   
                             @enderror
@@ -39,7 +39,7 @@
 
                         <div class="form-group">
                             <label for="price">Price</label>
-                            <input type="text" class="form-control @error('price') {{'is-invalid'}} @enderror" name="price" value=" {{ old('price') ?? $theater->price ?? ''}} ">
+                            <input type="text" class="form-control @error('price') {{'is-invalid'}} @enderror" name="price" value=" {{ old('price') ?? $arrangeMovie->price ?? ''}} ">
                             @error('price')
                             <span class="text-danger"> {{$message}} </span>   
                             @enderror
@@ -50,7 +50,7 @@
                             <select name="movie_id" class="form-control">
                                 <option value="">Pilih Film</option>
                                 @foreach($movies as $movie)
-                                    @if($movie->id == old('movie_id'))
+                                    @if($movie->id == (old('movie_id') ?? $arrangeMovie->movie_id ?? ''))
                                          <option value="{{$movie->id}}" selected>{{ $movie->title }} </option>
                                     @else
                                     <option value="{{$movie->id}}" placeholder="Pilih Film">{{ $movie->title }} </option>
@@ -67,13 +67,16 @@
                                 <label for="Seats">Seats</label>
                             </div>
                             <div class="col-5">
-                                <input type="text" class="form-control @error('rows') {{'is-invalid'}} @enderror" placeholder="Rows" name="rows" value=" {{ old('rows') ?? $theater->rows ?? ''}} ">
+                                @php
+                                    $seats = json_decode($arrangeMovie->seats);
+                                @endphp
+                                <input type="text" class="form-control @error('rows') {{'is-invalid'}} @enderror" placeholder="Rows" name="rows" value=" {{ old('rows') ?? $seats->rows ?? ''}} ">
                                 @error('rows')
                                 <span class="text-danger"> {{$message}} </span>   
                                 @enderror
                             </div>
                             <div class="col-5">
-                                <input type="text" class="form-control @error('columns') {{'is-invalid'}} @enderror" placeholder="Columns" name="columns" value=" {{old('columns') ?? $theater->columns ?? ''}} ">
+                                <input type="text" class="form-control @error('columns') {{'is-invalid'}} @enderror" placeholder="Columns" name="columns" value=" {{old('columns') ?? $seats->columns ?? ''}} ">
                                 @error('columns')
                                 <span class="text-danger"> {{$message}} </span>   
                                 @enderror
@@ -97,12 +100,12 @@
                             <label for="status">Status</label>
                         </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" name="status" class="form-check-input" value="Coming Soon" id="Coming Soon" @if((old('status') ?? $theater->status ?? '') == 'Coming Soon') checked @endif>
+                                <input type="radio" name="status" class="form-check-input" value="Coming Soon" id="Coming Soon" @if((old('status') ?? $arrangeMovie->status ?? '') == 'Coming Soon') checked @endif>
                                 <label for="Coming Soon" class="form-check-label">Coming Soon</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input type="radio" name="status" class="form-check-input" value="In Theater" id="In Theater" @if((old('status') ?? $theater->status ?? '') == 'In Theater') checked @endif>
+                                <input type="radio" name="status" class="form-check-input" value="In Theater" id="In Theater" @if((old('status') ?? $arrangeMovie->status ?? '') == 'In Theater') checked @endif>
                                 <label for="In Theater" class="form-check-label">In Theater</label>
                             </div>
                             @error('status')

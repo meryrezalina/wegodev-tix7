@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="col-4">
-                    <form method="get" action="{{ route('dashboard.theaters')}}">
+                    <form method="get" action="{{ route('dashboard.theaters.arrange.movie', $theater->id)}}">
                         <div class="input-group">
                             <input type="text" class="form-control form-control-sm" name="q" value="{{ $request['q'] ?? ''}}">
                             <div class="input-group-append">
@@ -53,14 +53,15 @@
                     <!-- KONTEN -->
                     @foreach ($arrangeMovies as $arrangeMovie)
                     <tr>
-                        <td class="col-thumbnail">
-                            <img src=" {{ asset('storage/movies/'.$arrangeMovie->movies->first()->thumbnail)}} " class="img-fluid">
+                        <td class="col-thumbnail text-center font-weight-bold">
+                            {{$arrangeMovie->movies->first()->title}}
+                            <img src=" {{ asset('storage/movies/'.$arrangeMovie->movies->first()->thumbnail)}} " class="img-fluid"> 
                         </td>
                         <td class="text-center">{{ $arrangeMovie->studio}}</td>
                         <td class="text-center">{{ $arrangeMovie->price}}</td>
                         <td class="text-center">{{ $arrangeMovie->status}}</td>
                         <td> 
-                            <a href="{{route('dashboard.theaters.arrange.movie.edit',  $arrangeMovie->id)}}" class="btn btn-success btn-sm" title="edit">
+                            <a href="{{route('dashboard.theaters.arrange.movie.edit',  [$theater->id, $arrangeMovie->id])}}" class="btn btn-success btn-sm" title="edit">
                             <i class="fas fa-edit"></i></a>
                         </td>
                     </tr> 
