@@ -22,33 +22,37 @@
             </div>
 
             <div class="card-body p-0">
+              @if($users->total())
                 <table class="table table-borderless table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Register</th>
-                        <th>Edited</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($users as $user)
-                    <tr>
-                        <th scope="row">{{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}</th>
-                        <td>{{ $user->name}}</td>
-                        <td>{{ $user->email}}</td>
-                        <td>{{ $user->created_at}}</td>
-                        <td>{{ $user->updated_at}}</td>
-                        <td> <a href="{{route('dashboard.users.edit', ['id' => $user->id])}}" class="btn btn-success btn-sm">
-                            <i class="fas fa-edit"></i> Edit</a></td>
-                    </tr> 
-                    @endforeach
-                </tbody>
-                </table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Register</th>
+                            <th>Edited</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($users as $user)
+                        <tr>
+                            <th scope="row">{{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}</th>
+                            <td>{{ $user->name}}</td>
+                            <td>{{ $user->email}}</td>
+                            <td>{{ $user->created_at}}</td>
+                            <td>{{ $user->updated_at}}</td>
+                            <td> <a href="{{route('dashboard.users.edit', ['id' => $user->id])}}" class="btn btn-success btn-sm">
+                                <i class="fas fa-edit"></i> Edit</a></td>
+                        </tr> 
+                        @endforeach
+                    </tbody>
+                    </table>
 
                 {{ $users ->appends($request)->links()}}
+                @else
+                <h4 class="text-center"> {{ __('message.no_data', ['module' => 'Users']) }}</h4>
+                @endif
             </div>
         </div>
 

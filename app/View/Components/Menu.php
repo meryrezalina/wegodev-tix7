@@ -45,14 +45,14 @@ class Menu extends Component
 
             ],
             [
-                'label' => 'Teater',
+                'label' => 'Theaters',
                 'route' => 'dashboard.teater',
                 'icon'  => 'fas fa-university'
 
 
             ],
             [
-                'label' => 'Tiket',
+                'label' => 'Tickets',
                 'route' => 'dashboard.tiket',
                 'icon'  => 'fas fa-ticket-alt'
 

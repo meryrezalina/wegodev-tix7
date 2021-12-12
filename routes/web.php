@@ -35,8 +35,21 @@ Route::delete('/dashboard/movies/{movie}', 'Dashboard\MovieController@destroy')-
 Route::get('/dashboard/movies/{movie}', 'Dashboard\MovieController@edit')->name('dashboard.movies.edit');
 Route::put('/dashboard/movies/{movie}', 'Dashboard\MovieController@update')->name('dashboard.movies.update');
 
+//Theaters
+Route::get('/dashboard/theaters', 'Dashboard\TheaterController@index')->name('dashboard.theaters');
+Route::get('/dashboard/theaters/create', 'Dashboard\TheaterController@create')->name('dashboard.theaters.create');
+Route::post('/dashboard/theaters', 'Dashboard\TheaterController@store')->name('dashboard.theaters.store');
+Route::delete('/dashboard/theaters/{theater}', 'Dashboard\TheaterController@destroy')->name('dashboard.theaters.delete');
+Route::get('/dashboard/theaters/{theater}', 'Dashboard\TheaterController@edit')->name('dashboard.theaters.edit');
+Route::put('/dashboard/theaters/{theater}', 'Dashboard\TheaterController@update')->name('dashboard.theaters.update');
 
-
+//ArrangeMovie
+Route::get('/dashboard/theaters/arrange/movies/{theater}', 'Dashboard\ArrangeMovieController@index')->name('dashboard.theaters.arrange.movie');
+Route::get('/dashboard/theaters/arrange/movies/create/{theater}', 'Dashboard\ArrangeMovieController@create')->name('dashboard.theaters.arrange.movie.create');
+Route::post('/dashboard/theaters/arrange/movies', 'Dashboard\ArrangeMovieController@store')->name('dashboard.theaters.arrange.movie.store');
+Route::delete('/dashboard/theaters/arrange/movies/{arrangeMovie}', 'Dashboard\ArrangeMovieController@destroy')->name('dashboard.theaters.arrange.movie.delete');
+Route::get('/dashboard/theaters/arrange/movies/{theater}/{arrangeMovie}', 'Dashboard\ArrangeMovieController@edit')->name('dashboard.theaters.arrange.movie.edit');
+Route::put('/dashboard/theaters/arrange/movies/{arrangeMovie}', 'Dashboard\ArrangeMovieController@update')->name('dashboard.theaters.arrange.movie.update');
 
 //Users
 Route::get('/dashboard/users', 'Dashboard\UserController@index')->name('dashboard.users');
