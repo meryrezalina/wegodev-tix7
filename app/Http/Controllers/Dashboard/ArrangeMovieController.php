@@ -148,7 +148,45 @@ class ArrangeMovieController extends Controller
      */
     public function update(Request $request, ArrangeMovie $arrangeMovie)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'theater_id'=> 'required',
+            'studio'    => 'required',
+            'price'     => 'required',
+            'movie_id'  => 'required',
+            'rows'      => 'required',
+            'columns'   => 'required',
+            'schedules'  => 'required',
+            'status'    => 'required'
+
+           // 'thumbnail' => 'required'
+        ]);
+        if($validator->fails()){
+            return redirect()
+                    ->route('dashboard.theaters.arrange.movie.edit', 
+                            [   'theater'        => $request->input('theater_id'),
+                                'arrangeMovie'   => $arrangeMovie->id])
+                    ->withErrors($validator)
+                    ->withInput();
+        }else{
+            $seats = [
+                'rows'    => $request->input('rows'),
+                'columns' => $request->input('columns')
+
+            ]; 
+
+            $arrangeMovie->theater_id    = $request->input('theater_id');
+            $arrangeMovie->studio        = $request->input('studio');
+            $arrangeMovie->price         = $request->input('price');
+            $arrangeMovie->movie_id      = $request->input('movie_id');
+            $arrangeMovie->status        = $request->input('status');
+            $arrangeMovie->seats         = json_encode($seats);
+            $arrangeMovie->schedules     = json_encode($request->input('schedules'));
+            $arrangeMovie->save();
+
+            return redirect()
+                    ->route('dashboard.theaters.arrange.movie', $request->input('theater_id'))
+                    ->with('message', __('message.update_theater', ['theater' => $request->input('studio')]));
+        }
     }
 
     /**
@@ -157,8 +195,15 @@ class ArrangeMovieController extends Controller
      * @param  \App\Models\ArrangeMovie  $arrangeMovie
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ArrangeMovie $arrangeMovie)
+    public function destroy(Request $request, ArrangeMovie $arrangeMovie)
     {
-        //
+        $arrangeMovie->delete();
+        $arrangeMovie= $arrangeMovie->studio;
+        
+
+        return redirect()
+            ->route('dashboard.theaters.arrange.movie', $request->input('theater_id'))
+            ->with('message', __('message.delete_theater', ['theater' => $request->input('studio')]));
+
     }
 }

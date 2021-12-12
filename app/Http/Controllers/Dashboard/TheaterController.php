@@ -144,7 +144,8 @@ class TheaterController extends Controller
            // $filename = time() .'.'. $image->getClientOriginalExtension();
            //Storage::disk('local')->putFileAs('public/theaters', $image, $filename);
             //$theater->thumbnail = $filename;
-            }
+          //}
+            
             
             $theater->theater = $request->input('theater');
             $theater->address = $request->input('address');
@@ -155,7 +156,7 @@ class TheaterController extends Controller
             return redirect()
                     ->route('dashboard.theaters')
                     ->with('message', __('message.update_theater', ['theater' => $request->input('theater')]));
-
+        }
     }
 
     /**

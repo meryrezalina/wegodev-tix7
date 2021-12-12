@@ -3,6 +3,11 @@
 @section('content')
     <div class="mb-2">
         <h3 class="text-center text-uppercase font-weight-bold ">{{ $theater->theater }}</h3>
+
+        <a href="{{ route('dashboard.theaters') }}" class="btn btn-primary mb-0">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+
         <a href=" {{route('dashboard.theaters.arrange.movie.create', $theater->id)}} " class="btn btn-primary mb-0"> 
             <i class="fas fa-plus"></i> Studio 
         </a>

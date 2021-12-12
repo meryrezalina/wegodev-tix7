@@ -5,7 +5,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-8 align-self-center">
-                    <h3>Theaters</h3>
+                    <h3>Studio</h3>
                 </div>
 
                 <div class="col-4 text-right">
@@ -19,10 +19,10 @@
         <div class="card-body ">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <form method="post" action="{{route($url, $theater->id ?? '') }}" enctype="multipart/form-data">
+                    <form method="post" action="{{route($url, $arrangeMovie->id ?? '') }}" enctype="multipart/form-data">
                         @csrf
-                        @if(isset($theater))
-                      <!--  @method('put') -->
+                        @if(isset($arrangeMovie))
+                         @method('put') 
                         @endif
                         
                         <h3 class="text-center text-uppercase font-weight-bold">{{ $theater->theater }}</h3>
@@ -31,7 +31,7 @@
 
                         <div class="form-group">
                             <label for="studio">Studio</label>
-                            <input type="text" class="form-control @error('studio') {{'is-invalid'}} @enderror" name="studio" placeholder= "Studio" value=" {{ old('studio') ?? $arrangeMovie->studio ?? ''}} ">
+                            <input type="text" class="form-control @error('studio') {{'is-invalid'}} @enderror" name="studio" placeholder= "Studio" value="{{ old('studio') ?? $arrangeMovie->studio ?? ''}}">
                             @error('studio')
                             <span class="text-danger"> {{$message}} </span>   
                             @enderror
@@ -39,7 +39,7 @@
 
                         <div class="form-group">
                             <label for="price">Price</label>
-                            <input type="text" class="form-control @error('price') {{'is-invalid'}} @enderror" name="price" value=" {{ old('price') ?? $arrangeMovie->price ?? ''}} ">
+                            <input type="number" class="form-control @error('price') {{'is-invalid'}} @enderror" name="price" placeholder="20000" value="{{ old('price') ?? $arrangeMovie->price ?? ''}}">
                             @error('price')
                             <span class="text-danger"> {{$message}} </span>   
                             @enderror
@@ -68,15 +68,15 @@
                             </div>
                             <div class="col-5">
                                 @php
-                                    $seats = json_decode($arrangeMovie->seats);
+                                    $seats = isset($arrangeMovie->seats) ? json_decode($arrangeMovie->seats) : false;
                                 @endphp
-                                <input type="text" class="form-control @error('rows') {{'is-invalid'}} @enderror" placeholder="Rows" name="rows" value=" {{ old('rows') ?? $seats->rows ?? ''}} ">
+                                <input type="text" class="form-control @error('rows') {{'is-invalid'}} @enderror" placeholder="Rows" name="rows" value="{{ old('rows') ?? $seats->rows ?? ''}}">
                                 @error('rows')
                                 <span class="text-danger"> {{$message}} </span>   
                                 @enderror
                             </div>
                             <div class="col-5">
-                                <input type="text" class="form-control @error('columns') {{'is-invalid'}} @enderror" placeholder="Columns" name="columns" value=" {{old('columns') ?? $seats->columns ?? ''}} ">
+                                <input type="text" class="form-control @error('columns') {{'is-invalid'}} @enderror" placeholder="Columns" name="columns" value="{{old('columns') ?? $seats->columns ?? ''}}">
                                 @error('columns')
                                 <span class="text-danger"> {{$message}} </span>   
                                 @enderror
@@ -88,7 +88,7 @@
                                 <div class="form-group mb-0">
                                     <label for="schedule">Schedule</label>
                                 </div>
-                                 <schedule-component :old-schedules="{{ json_encode(old('schedules') ?? []) }}"></schedule-component>
+                                 <schedule-component :old-schedules="{{ $arrangeMovie->schedules ?? json_encode(old('schedules') ?? []) }}"></schedule-component>
                             </div>
                             @error('columns')
                                 <span class="text-danger"> {{$message}} </span>   
@@ -123,23 +123,24 @@
         </div>
     </div>
     
-    @if(isset($theater))
+    @if(isset($arrangeMovie))
     <div class="modal fade" id="deleteModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5>Delete</h5>
                 </div>
-
+                
                 <div class="modal-body">
-                    <p>Hapus theater {{$theater->theater}}????????</p>
+                    <p>Hapus theater {{ $arrangeMovie->studio }}????????</p>
                 </div>
-
+                
                 <div class="modal-footer">
-                    <form action="{{route('dashboard.theaters.delete', $theater->id)}}" method="post">
-                    @csrf
-                    @method('delete')
-                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>
+                    <form action="{{route('dashboard.theaters.arrange.movie.delete', $arrangeMovie->id)}}" method="post">
+                        @csrf
+                        @method('delete')
+                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>
+                        <input type="hidden" name="theater_id" value=" {{ $theater->id }} " readonly>
                     </form>
                 </div>
             </div>
