@@ -13,6 +13,7 @@ class RenameArrangeMovieToStudioTable extends Migration
      */
     public function up()
     {
+        //kalau pake Mysql
         // Schema::table('arrange_movie', function(Blueprint $table){
         //     $table->renameIndex('arrange_movie_theater_id_foreign', 'studios_theater_id_foreign	');
         //     $table->renameIndex('arrange_movie_movie_id_foreign', 'studios_movie_id_foreign	');
@@ -29,7 +30,7 @@ class RenameArrangeMovieToStudioTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down() //kembalikan nama_table
     {
         Schema::rename('studios', 'arrange_movie');
     }

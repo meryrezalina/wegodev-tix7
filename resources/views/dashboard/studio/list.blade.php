@@ -8,7 +8,7 @@
             <i class="fas fa-arrow-left"></i>
         </a>
 
-        <a href=" {{route('dashboard.theaters.arrange.movie.create', $theater->id)}} " class="btn btn-primary mb-0"> 
+        <a href=" {{route('dashboard.theaters.studio.create', $theater->id)}} " class="btn btn-primary mb-0"> 
             <i class="fas fa-plus"></i> Studio 
         </a>
     </div>
@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="col-4">
-                    <form method="get" action="{{ route('dashboard.theaters.arrange.movie', $theater->id)}}">
+                    <form method="get" action="{{ route('dashboard.theaters.studio', $theater->id)}}">
                         <div class="input-group">
                             <input type="text" class="form-control form-control-sm" name="q" value="{{ $request['q'] ?? ''}}">
                             <div class="input-group-append">
@@ -56,17 +56,17 @@
                      </thead>
                 <tbody>
                     <!-- KONTEN -->
-                    @foreach ($arrangeMovies as $arrangeMovie)
+                    @foreach ($studios as $studio)
                     <tr>
                         <td class="col-thumbnail text-center font-weight-bold">
-                            {{$arrangeMovie->movies->first()->title}}
-                            <img src=" {{ asset('storage/movies/'.$arrangeMovie->movies->first()->thumbnail)}} " class="img-fluid"> 
+                            {{$studio->movies->first()->title}}
+                            <img src=" {{ asset('storage/movies/'.$studio->movies->first()->thumbnail)}} " class="img-fluid"> 
                         </td>
-                        <td class="text-center">{{ $arrangeMovie->studio}}</td>
-                        <td class="text-center">{{ $arrangeMovie->price}}</td>
-                        <td class="text-center">{{ $arrangeMovie->status}}</td>
+                        <td class="text-center">{{ $studio->studio}}</td>
+                        <td class="text-center">{{ $studio->price}}</td>
+                        <td class="text-center">{{ $studio->status}}</td>
                         <td> 
-                            <a href="{{route('dashboard.theaters.arrange.movie.edit',  [$theater->id, $arrangeMovie->id])}}" class="btn btn-success btn-sm" title="edit">
+                            <a href="{{route('dashboard.theaters.studio.edit',  [$theater->id, $studio->id])}}" class="btn btn-success btn-sm" title="edit">
                             <i class="fas fa-edit"></i></a>
                         </td>
                     </tr> 

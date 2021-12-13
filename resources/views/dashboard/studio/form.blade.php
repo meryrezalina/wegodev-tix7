@@ -19,9 +19,9 @@
         <div class="card-body ">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <form method="post" action="{{route($url, $arrangeMovie->id ?? '') }}" enctype="multipart/form-data">
+                    <form method="post" action="{{route($url, $studio->id ?? '') }}" enctype="multipart/form-data">
                         @csrf
-                        @if(isset($arrangeMovie))
+                        @if(isset($studio))
                          @method('put') 
                         @endif
                         
@@ -31,7 +31,7 @@
 
                         <div class="form-group">
                             <label for="studio">Studio</label>
-                            <input type="text" class="form-control @error('studio') {{'is-invalid'}} @enderror" name="studio" placeholder= "Studio" value="{{ old('studio') ?? $arrangeMovie->studio ?? ''}}">
+                            <input type="text" class="form-control @error('studio') {{'is-invalid'}} @enderror" name="studio" placeholder= "Studio" value="{{ old('studio') ?? $studio->studio ?? ''}}">
                             @error('studio')
                             <span class="text-danger"> {{$message}} </span>   
                             @enderror
@@ -39,7 +39,7 @@
 
                         <div class="form-group">
                             <label for="price">Price</label>
-                            <input type="number" class="form-control @error('price') {{'is-invalid'}} @enderror" name="price" placeholder="20000" value="{{ old('price') ?? $arrangeMovie->price ?? ''}}">
+                            <input type="text" class="form-control @error('price') {{'is-invalid'}} @enderror" name="price" placeholder="20000" value="{{ old('price') ?? $studio->price ?? ''}}">
                             @error('price')
                             <span class="text-danger"> {{$message}} </span>   
                             @enderror
@@ -50,7 +50,7 @@
                             <select name="movie_id" class="form-control">
                                 <option value="">Pilih Film</option>
                                 @foreach($movies as $movie)
-                                    @if($movie->id == (old('movie_id') ?? $arrangeMovie->movie_id ?? ''))
+                                    @if($movie->id == (old('movie_id') ?? $studio->movie_id ?? ''))
                                          <option value="{{$movie->id}}" selected>{{ $movie->title }} </option>
                                     @else
                                     <option value="{{$movie->id}}" placeholder="Pilih Film">{{ $movie->title }} </option>
@@ -68,7 +68,7 @@
                             </div>
                             <div class="col-5">
                                 @php
-                                    $seats = isset($arrangeMovie->seats) ? json_decode($arrangeMovie->seats) : false;
+                                    $seats = isset($studio->seats) ? json_decode($studio->seats) : false;
                                 @endphp
                                 <input type="text" class="form-control @error('rows') {{'is-invalid'}} @enderror" placeholder="Rows" name="rows" value="{{ old('rows') ?? $seats->rows ?? ''}}">
                                 @error('rows')
@@ -86,9 +86,9 @@
                         <div class="card mb-2">
                             <div class="card-body">
                                 <div class="form-group mb-0">
-                                    <label for="schedule">Schedule</label>
+                                    <label for="schedule">Schedules</label>
                                 </div>
-                                 <schedule-component :old-schedules="{{ $arrangeMovie->schedules ?? json_encode(old('schedules') ?? []) }}"></schedule-component>
+                                 <schedule-component :old-schedules="{{ $studio->schedules ?? json_encode(old('schedules') ?? []) }}"></schedule-component>
                             </div>
                             @error('columns')
                                 <span class="text-danger"> {{$message}} </span>   
@@ -100,12 +100,12 @@
                             <label for="status">Status</label>
                         </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" name="status" class="form-check-input" value="Coming Soon" id="Coming Soon" @if((old('status') ?? $arrangeMovie->status ?? '') == 'Coming Soon') checked @endif>
+                                <input type="radio" name="status" class="form-check-input" value="Coming Soon" id="Coming Soon" @if((old('status') ?? $studio->status ?? '') == 'Coming Soon') checked @endif>
                                 <label for="Coming Soon" class="form-check-label">Coming Soon</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input type="radio" name="status" class="form-check-input" value="In Theater" id="In Theater" @if((old('status') ?? $arrangeMovie->status ?? '') == 'In Theater') checked @endif>
+                                <input type="radio" name="status" class="form-check-input" value="In Theater" id="In Theater" @if((old('status') ?? $studio->status ?? '') == 'In Theater') checked @endif>
                                 <label for="In Theater" class="form-check-label">In Theater</label>
                             </div>
                             @error('status')
@@ -123,7 +123,7 @@
         </div>
     </div>
     
-    @if(isset($arrangeMovie))
+    @if(isset($studio))
     <div class="modal fade" id="deleteModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -132,11 +132,11 @@
                 </div>
                 
                 <div class="modal-body">
-                    <p>Hapus theater {{ $arrangeMovie->studio }}????????</p>
+                    <p>Hapus theater {{ $studio->studio }}????????</p>
                 </div>
                 
                 <div class="modal-footer">
-                    <form action="{{route('dashboard.theaters.arrange.movie.delete', $arrangeMovie->id)}}" method="post">
+                    <form action="{{route('dashboard.theaters.studio.delete', $studio->id)}}" method="post">
                         @csrf
                         @method('delete')
                         <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>

@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Movie;
 use App\Models\Theater;
-use App\Models\ArrangeMovie;
+use App\Models\Studio;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
-class ArrangeMovieController extends Controller
+class StudioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class ArrangeMovieController extends Controller
 
         $active = 'Theaters';
 
-        $arrangeMovies = ArrangeMovie::where('theater_id', $theater->id)
+        $studios = Studio::where('theater_id', $theater->id)
                                             ->with('movies')
                                             ->whereHas('movies', function($query) use ($q){
                                                 $query->where('title', 'like', '%'.$q.'%');
@@ -31,8 +31,8 @@ class ArrangeMovieController extends Controller
 
         $request = $request->all();
 
-        return view('dashboard/arrange_movie/list', [
-                     'arrangeMovies' => $arrangeMovies,
+        return view('dashboard/studio/list', [
+                     'studios'        => $studios,
                      'theater'       => $theater,
                      'request'       => $request, 
                      'active'        => $active]);
@@ -48,10 +48,10 @@ class ArrangeMovieController extends Controller
 
         $active = 'Theaters';
         $movies = Movie::get();
-        return view('dashboard/arrange_movie/form', [
+        return view('dashboard/studio/form', [
         'theater' => $theater,
         'movies' => $movies,
-        'url'    => 'dashboard.theaters.arrange.movie.store',
+        'url'    => 'dashboard.theaters.studio.store',
         'button' => 'Create',
         'active' => $active
     ]);
@@ -63,7 +63,7 @@ class ArrangeMovieController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, ArrangeMovie $arrangeMovie)
+    public function store(Request $request, Studio $studio)
     {
         $validator = Validator::make($request->all(), [
             'theater_id'=> 'required',
@@ -80,7 +80,7 @@ class ArrangeMovieController extends Controller
 
         if($validator->fails()){
             return redirect()
-                    ->route('dashboard.theaters.arrange.movie.create', $request->input('theater_id'))
+                    ->route('dashboard.theaters.studio.create', $request->input('theater_id'))
                     ->withErrors($validator)
                     ->withInput();
         }else{
@@ -91,17 +91,17 @@ class ArrangeMovieController extends Controller
 
             ]; 
 
-            $arrangeMovie->theater_id    = $request->input('theater_id');
-            $arrangeMovie->studio        = $request->input('studio');
-            $arrangeMovie->price         = $request->input('price');
-            $arrangeMovie->movie_id      = $request->input('movie_id');
-            $arrangeMovie->status        = $request->input('status');
-            $arrangeMovie->seats         = json_encode($seats);
-            $arrangeMovie->schedules     = json_encode($request->input('schedules'));
-            $arrangeMovie->save();
+            $studio->theater_id    = $request->input('theater_id');
+            $studio->studio        = $request->input('studio');
+            $studio->price         = $request->input('price');
+            $studio->movie_id      = $request->input('movie_id');
+            $studio->status        = $request->input('status');
+            $studio->seats         = json_encode($seats);
+            $studio->schedules     = json_encode($request->input('schedules'));
+            $studio->save();
 
             return redirect()
-                    ->route('dashboard.theaters.arrange.movie', $request->input('theater_id'))
+                    ->route('dashboard.theaters.studio', $request->input('theater_id'))
                     ->with('message', __('message.create_theater', ['theater' => $request->input('studio')]));
         }
     }
@@ -109,10 +109,10 @@ class ArrangeMovieController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ArrangeMovie  $arrangeMovie
+     * @param  \App\Models\Studio  $studio
      * @return \Illuminate\Http\Response
      */
-    public function show(ArrangeMovie $arrangeMovie)
+    public function show(Studio $studio)
     {
         //
     }
@@ -120,20 +120,20 @@ class ArrangeMovieController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ArrangeMovie  $arrangeMovie
+     * @param  \App\Models\Studio  $studio
      * @return \Illuminate\Http\Response
      */
-    public function edit(Theater $theater, ArrangeMovie $arrangeMovie)
+    public function edit(Theater $theater, Studio $studio)
     {
         $active = 'Theaters';
 
         $movies = Movie::get();
 
-        return view('dashboard/arrange_movie/form', [
+        return view('dashboard/studio/form', [
         'theater'           => $theater,
         'movies'            => $movies,
-        'arrangeMovie'      => $arrangeMovie,
-        'url'               => 'dashboard.theaters.arrange.movie.update',
+        'studio'            => $studio,
+        'url'               => 'dashboard.theaters.studio.update',
         'button'            => 'Update',
         'active'            => $active
     ]);
@@ -143,10 +143,10 @@ class ArrangeMovieController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ArrangeMovie  $arrangeMovie
+     * @param  \App\Models\Studio  $studio
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ArrangeMovie $arrangeMovie)
+    public function update(Request $request, Studio $studio)
     {
         $validator = Validator::make($request->all(), [
             'theater_id'=> 'required',
@@ -162,9 +162,9 @@ class ArrangeMovieController extends Controller
         ]);
         if($validator->fails()){
             return redirect()
-                    ->route('dashboard.theaters.arrange.movie.edit', 
+                    ->route('dashboard.theaters.studio.edit', 
                             [   'theater'        => $request->input('theater_id'),
-                                'arrangeMovie'   => $arrangeMovie->id])
+                                'studio'         => $studio->id])
                     ->withErrors($validator)
                     ->withInput();
         }else{
@@ -174,17 +174,17 @@ class ArrangeMovieController extends Controller
 
             ]; 
 
-            $arrangeMovie->theater_id    = $request->input('theater_id');
-            $arrangeMovie->studio        = $request->input('studio');
-            $arrangeMovie->price         = $request->input('price');
-            $arrangeMovie->movie_id      = $request->input('movie_id');
-            $arrangeMovie->status        = $request->input('status');
-            $arrangeMovie->seats         = json_encode($seats);
-            $arrangeMovie->schedules     = json_encode($request->input('schedules'));
-            $arrangeMovie->save();
+            $studio->theater_id    = $request->input('theater_id');
+            $studio->studio        = $request->input('studio');
+            $studio->price         = $request->input('price');
+            $studio->movie_id      = $request->input('movie_id');
+            $studio->status        = $request->input('status');
+            $studio->seats         = json_encode($seats);
+            $studio->schedules     = json_encode($request->input('schedules'));
+            $studio->save();
 
             return redirect()
-                    ->route('dashboard.theaters.arrange.movie', $request->input('theater_id'))
+                    ->route('dashboard.theaters.studio', $request->input('theater_id'))
                     ->with('message', __('message.update_theater', ['theater' => $request->input('studio')]));
         }
     }
@@ -192,17 +192,17 @@ class ArrangeMovieController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ArrangeMovie  $arrangeMovie
+     * @param  \App\Models\Studio  $studio
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, ArrangeMovie $arrangeMovie)
+    public function destroy(Request $request, Studio $studio)
     {
-        $arrangeMovie->delete();
-        $arrangeMovie= $arrangeMovie->studio;
+        $studio->delete();
+        $studio= $studio->studio;
         
 
         return redirect()
-            ->route('dashboard.theaters.arrange.movie', $request->input('theater_id'))
+            ->route('dashboard.theaters.studio', $request->input('theater_id'))
             ->with('message', __('message.delete_theater', ['theater' => $request->input('studio')]));
 
     }

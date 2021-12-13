@@ -62,7 +62,7 @@
                         <td> 
                             <a href="{{route('dashboard.theaters.edit',  $theater->id)}}" class="btn btn-success btn-sm" title="edit">
                             <i class="fas fa-edit"></i></a>
-                            <a href="{{route('dashboard.theaters.arrange.movie',  $theater->id)}}" class="btn btn-primary btn-sm" title="arrange movie">
+                            <a href="{{route('dashboard.theaters.studio',  $theater->id)}}" class="btn btn-primary btn-sm" title="studio">
                                 <i class="fas fa-film"></i></a>
                         </td>
                     </tr> 

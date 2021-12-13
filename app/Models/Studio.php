@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ArrangeMovie extends Model
+class Studio extends Model
 {
-    protected $table = 'arrange_movie';
+    protected $table = 'studios';
 
     //relasi dengan tabel movie
     public function movies(){
